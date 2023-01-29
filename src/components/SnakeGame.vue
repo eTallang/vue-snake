@@ -30,8 +30,8 @@ import Food from "./Food.vue";
 import GameHeader from "./GameHeader.vue";
 import { useArrowKeyListener } from "./useArrowKeyListener";
 
-const gridSizeY = 5;
-const gridSizeX = 8;
+const gridSizeY = 20;
+const gridSizeX = 30;
 const direction = useArrowKeyListener();
 
 const getRandomPosition = (): Coordinate => {
@@ -127,7 +127,7 @@ onMounted(() => {
     checkIfSnakeCrashedWithWall();
     checkIfSnakeCrashedWithItself();
     checkIfSnakeAteFood();
-  }, 300);
+  }, 120);
 });
 </script>
 
