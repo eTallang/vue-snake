@@ -15,7 +15,7 @@
           :key="index"
           :coordinate="part"
         />
-        <food :coordinate="foodPosition" />
+        <food v-if="foodPosition" :coordinate="foodPosition" />
       </template>
     </div>
   </div>
@@ -30,8 +30,8 @@ import Food from "./Food.vue";
 import GameHeader from "./GameHeader.vue";
 import { useArrowKeyListener } from "./useArrowKeyListener";
 
-const gridSizeY = 20;
-const gridSizeX = 30;
+const gridSizeY = 5;
+const gridSizeX = 8;
 const direction = useArrowKeyListener();
 
 const getRandomPosition = (): Coordinate => {
@@ -43,7 +43,7 @@ const getRandomPosition = (): Coordinate => {
 
 const isDead = ref(false);
 const snakeAteFood = ref(false);
-const foodPosition = ref<Coordinate>(getRandomPosition());
+const foodPosition = ref<Coordinate | undefined>(getRandomPosition());
 const snakeParts = ref<Coordinate[]>([
   { x: 0, y: 0 },
   { x: 1, y: 0 },
@@ -75,8 +75,8 @@ const checkIfSnakeCrashedWithWall = (): void => {
   if (
     head.value.x < 0 ||
     head.value.y < 0 ||
-    head.value.x > gridSizeX ||
-    head.value.y > gridSizeY
+    head.value.x >= gridSizeX ||
+    head.value.y >= gridSizeY
   ) {
     isDead.value = true;
   }
@@ -96,13 +96,29 @@ const checkIfSnakeCrashedWithItself = (): void => {
 
 const checkIfSnakeAteFood = (): void => {
   const snakeAte =
-    head.value.x === foodPosition.value.x &&
+    head.value.x === foodPosition.value?.x &&
     head.value.y === foodPosition.value.y;
 
   if (snakeAte) {
-    foodPosition.value = getRandomPosition();
+    createNewFoodPosition();
   }
   snakeAteFood.value = snakeAte;
+};
+
+const createNewFoodPosition = () => {
+  if (snakeParts.value.length === gridSizeX * gridSizeY) {
+    foodPosition.value = undefined;
+  } else {
+    foodPosition.value = getRandomPosition();
+    while (
+      snakeParts.value.some(
+        (part) =>
+          part.x === foodPosition.value?.x && part.y === foodPosition.value.y
+      )
+    ) {
+      foodPosition.value = getRandomPosition();
+    }
+  }
 };
 
 onMounted(() => {
@@ -111,7 +127,7 @@ onMounted(() => {
     checkIfSnakeCrashedWithWall();
     checkIfSnakeCrashedWithItself();
     checkIfSnakeAteFood();
-  }, 120);
+  }, 300);
 });
 </script>
 
