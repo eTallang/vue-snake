@@ -1,0 +1,21 @@
+:root {
+  --background-color: #bac601;
+  --snake-color: #605513;
+}
+
+body {
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+*,
+*::before,
+*::after {
+  font-family: "VT323", monospace;
+  color: var(--snake-color);
+  box-sizing: border-box;
+  margin: 0;
+  position: relative;
+  font-weight: normal;
+}
