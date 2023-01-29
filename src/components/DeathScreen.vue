@@ -1,9 +1,9 @@
 <template>
   <div class="death-container">
     <h1>You died!</h1>
-    <p class="retry-description">Press "Cmd + r" to restart.</p>
+    <p>Press "Cmd + r" to restart.</p>
     <template v-if="showNameInput">
-      <h1>New highscore!</h1>
+      <h1 class="flash">New highscore!</h1>
       <name-input @on-submit="onNameEntry" />
     </template>
     <template v-else>
@@ -60,6 +60,22 @@ onMounted(() => {
 </script>
 
 <style scoped>
+@keyframes flash {
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  71%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.flash {
+  animation: flash 0.8s infinite;
+}
+
 .death-container {
   grid-row: 1 / -1;
   grid-column: 1 / -1;
@@ -70,15 +86,12 @@ onMounted(() => {
 }
 
 h1 {
-  font-size: 3rem;
-}
-
-.retry-description {
-  margin-bottom: 32px;
+  font-size: 1.5rem;
 }
 
 p {
-  font-size: 2rem;
+  font-size: 0.875rem;
+  margin-bottom: 64px;
 }
 
 .score-entry {
@@ -87,7 +100,7 @@ p {
   padding: 4px 0;
   width: 100%;
   max-width: 360px;
-  font-size: 2rem;
+  font-size: 1rem;
   text-transform: uppercase;
 }
 </style>

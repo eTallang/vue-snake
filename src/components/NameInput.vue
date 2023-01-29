@@ -22,12 +22,10 @@ onMounted(() => {
 
 const onKeydown = (ev: KeyboardEvent): void => {
   if (ev.key === "Enter" && name.value) {
-    console.log("emitting", name.value);
-    emit("onSubmit", name?.value);
-  } else if (!/^([a-zA-Z])$/.test(ev.key)) {
+    emit("onSubmit", name?.value.toUpperCase());
+  } else if (!/^([a-zA-Z])$/.test(ev.key) && ev.key !== "Backspace") {
     ev.preventDefault();
   }
-  console.log(name.value);
 };
 </script>
 
@@ -38,10 +36,11 @@ const onKeydown = (ev: KeyboardEvent): void => {
   background: transparent;
   padding: 4px 8px;
   width: 100%;
-  max-width: 300px;
-  font-size: 3rem;
+  max-width: 200px;
+  font-size: 1.5rem;
   caret-color: var(--snake-color);
   text-transform: uppercase;
+  text-align: center;
 }
 
 .score-input:focus {

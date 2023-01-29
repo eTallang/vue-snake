@@ -1,18 +1,29 @@
+@font-face {
+  font-family: "Nokia Cellphone FC";
+  src: url(https://manzdev.github.io/twitch-nokia3310/nokia-cellphone-fc.woff2)
+      format("woff2"),
+    url(https://manzdev.github.io/twitch-nokia3310/nokia-cellphone-fc.woff)
+      format("woff"),
+    url(https://manzdev.github.io/twitch-nokia3310/nokia-cellphone-fc.ttf)
+      format("truetype");
+  font-display: swap;
+}
+
 :root {
-  --background-color: #bac601;
-  --snake-color: #605513;
+  --background-color: #818634;
+  --snake-color: #413b15;
 }
 
 body {
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100vh;
+  background-color: #191919;
 }
 
 *,
 *::before,
 *::after {
-  font-family: "VT323", monospace;
+  font-family: "Nokia Cellphone FC", monospace;
   color: var(--snake-color);
   box-sizing: border-box;
   margin: 0;

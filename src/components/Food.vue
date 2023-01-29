@@ -27,9 +27,13 @@ defineProps({
 });
 </script>
 
-<style scoped>
-.food svg {
-  width: 100%;
-  height: 100%;
+<style scoped lang="scss">
+.food {
+  svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+  }
 }
 </style>
