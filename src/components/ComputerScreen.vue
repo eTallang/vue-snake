@@ -1,6 +1,7 @@
 <template>
   <div class="computer-screen">
     <slot />
+    <div class="dirt" />
   </div>
 </template>
 
@@ -42,5 +43,16 @@
     );
     pointer-events: none;
   }
+}
+
+.dirt {
+  background-image: url("../assets/dirt.jpg");
+  background-size: contain;
+  mix-blend-mode: overlay;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  opacity: 0.1;
 }
 </style>

@@ -8,7 +8,11 @@
         'grid-template-rows': `repeat(${gridSizeY}, minmax(0, 1fr))`,
       }"
     >
-      <death-screen v-if="isDead" :newScore="snakeParts.length - 2" />
+      <death-screen
+        v-if="gameState === 'dead'"
+        :newScore="snakeParts.length - 2"
+      />
+      <win-screen v-else-if="gameState === 'win'" />
       <template v-else>
         <snake-part
           v-for="(part, index) in snakeParts"
@@ -26,6 +30,7 @@ import { computed, onMounted, ref } from "vue";
 import type { Coordinate } from "../types";
 import SnakePart from "./SnakePart.vue";
 import DeathScreen from "./DeathScreen.vue";
+import WinScreen from "./WinScreen.vue";
 import Food from "./Food.vue";
 import GameHeader from "./GameHeader.vue";
 import { useArrowKeyListener } from "./useArrowKeyListener";
@@ -41,7 +46,8 @@ const getRandomPosition = (): Coordinate => {
   };
 };
 
-const isDead = ref(false);
+let intervalId = 0;
+const gameState = ref<"dead" | "win" | "game">("game");
 const snakeAteFood = ref(false);
 const foodPosition = ref<Coordinate | undefined>(getRandomPosition());
 const snakeParts = ref<Coordinate[]>([
@@ -78,7 +84,7 @@ const checkIfSnakeCrashedWithWall = (): void => {
     head.value.x >= gridSizeX ||
     head.value.y >= gridSizeY
   ) {
-    isDead.value = true;
+    gameState.value = "dead";
   }
 };
 
@@ -90,7 +96,8 @@ const checkIfSnakeCrashedWithItself = (): void => {
       (part) => part.x === head.value.x && part.y === head.value.y
     )
   ) {
-    isDead.value = true;
+    console.log("creahed");
+    gameState.value = "dead";
   }
 };
 
@@ -108,6 +115,8 @@ const checkIfSnakeAteFood = (): void => {
 const createNewFoodPosition = () => {
   if (snakeParts.value.length === gridSizeX * gridSizeY) {
     foodPosition.value = undefined;
+    gameState.value = "win";
+    clearInterval(intervalId);
   } else {
     foodPosition.value = getRandomPosition();
     while (
@@ -122,7 +131,7 @@ const createNewFoodPosition = () => {
 };
 
 onMounted(() => {
-  setInterval(() => {
+  intervalId = setInterval(() => {
     moveSnake();
     checkIfSnakeCrashedWithWall();
     checkIfSnakeCrashedWithItself();
